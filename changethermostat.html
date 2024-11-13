@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Thermostat Settings - Home Smart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d0f0f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 24px;
+        }
+        .back-button, .logout-button {
+            background-color: #17d4c5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-button:hover, .logout-button:hover {
+            background-color: #14b7a9;
+        }
+        .thermostat-display {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: white;
+            position: relative;
+        }
+        .temp-control {
+            position: absolute;
+            font-size: 36px;
+            background: none;
+            border: none;
+            color: #17d4c5;
+            cursor: pointer;
+        }
+        .temp-up {
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .temp-down {
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .control-section {
+            margin-top: 30px;
+        }
+        .control-section h3 {
+            text-align: center;
+            color: #333;
+        }
+        .mode-buttons, .timer-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .mode-button, .timer-button, .timer-input, #timerMode {
+            padding: 10px 15px;
+            background-color: #17d4c5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .mode-button:hover, .timer-button:hover {
+            background-color: #14b7a9;
+        }
+        .mode-button.active {
+            background-color: #14b7a9;
+        }
+        .timer-input {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ddd;
+            width: 50px;
+            text-align: center;
+        }
+        #timerMode {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        #notification {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="main-menu.html" class="back-button">Back</a>
+            <h1>Change Thermostat Settings</h1>
+            <a href="index.html" class="logout-button">Logout</a>
+        </div>
+        
+        <div class="thermostat-display">
+            <span id="temperature">72°F</span>
+            <button class="temp-control temp-up" id="increaseTemp">▲</button>
+            <button class="temp-control temp-down" id="decreaseTemp">▼</button>
+        </div>
+        
+        <div class="control-section">
+            <h3>Mode Selection</h3>
+            <div class="mode-buttons">
+                <button class="mode-button active" id="coolMode">Cool</button>
+                <button class="mode-button" id="heatMode">Heat</button>
+                <button class="mode-button" id="fanMode">Fan</button>
+                <button class="mode-button" id="offMode">Off</button>
+            </div>
+        </div>
+        
+        <div class="control-section">
+            <h3>Set Timer</h3>
+            <div class="timer-section">
+                <input type="number" id="timerHours" class="timer-input" min="0" max="23" placeholder="Hrs">
+                <input type="number" id="timerMinutes" class="timer-input" min="0" max="59" placeholder="Mins">
+                <select id="timerMode" class="timer-input">
+                    <option value="cool">Cool</option>
+                    <option value="heat">Heat</option>
+                    <option value="fan">Fan</option>
+                </select>
+                <button id="setTimer" class="timer-button">Set Timer</button>
+            </div>
+        </div>
+        
+        <div id="notification"></div>
+    </div>
+    
+    <script>
+        let currentTemp = 72;
+        let currentMode = 'cool';
+        let timerEndTime = null;
+        
+        function updateTemperature(change) {
+            currentTemp += change;
+            currentTemp = Math.max(60, Math.min(90, currentTemp));
+            document.getElementById('temperature').textContent = `${currentTemp}°F`;
+            showNotification(`Temperature set to ${currentTemp}°F`);
+            saveSettings();
+        }
+        
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${mode}Mode`).classList.add('active');
+            showNotification(`Mode set to ${mode}`);
+            saveSettings();
+        }
+        
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        function saveSettings() {
+            const settings = {
+                temperature: currentTemp,
+                mode: currentMode
+            };
+            localStorage.setItem('thermostatSettings', JSON.stringify(settings));
+        }
+        
+        document.getElementById('decreaseTemp').addEventListener('click', () => updateTemperature(-1));
+        document.getElementById('increaseTemp').addEventListener('click', () => updateTemperature(1));
+        
+        document.querySelectorAll('.mode-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                setMode(this.id.replace('Mode', ''));
+            });
+        });
+        
+        document.getElementById('setTimer').addEventListener('click', function() {
+            const hours = parseInt(document.getElementById('timerHours').value) || 0;
+            const minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+            const mode = document.getElementById('timerMode').value;
+            
+            if (hours === 0 && minutes === 0) {
+                showNotification('Please enter a valid duration');
+                return;
+            }
+            
+            const durationInMinutes = hours * 60 + minutes;
+            timerEndTime = new Date(new Date().getTime() + durationInMinutes * 60000);
+            setMode(mode);
+            showNotification(`Timer set for ${hours}h ${minutes}m in ${mode} mode`);
+            
+            setTimeout(() => {
+                if (new Date() >= timerEndTime) {
+                    setMode('off');
+                    showNotification('Timer ended. Thermostat turned off.');
+                }
+            }, durationInMinutes * 60000);
+        });
+
+        // Load settings when the page loads
+        window.addEventListener('load', function() {
+            const savedSettings = JSON.parse(localStorage.getItem('thermostatSettings'));
+            if (savedSettings) {
+                currentTemp = savedSettings.temperature;
+                currentMode = savedSettings.mode;
+                document.getElementById('temperature').textContent = `${currentTemp}°F`;
+                setMode(currentMode);
+            }
+        });
+    </script>
+</body>
+</html>

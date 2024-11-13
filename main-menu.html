@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Smart - Main Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d0f0f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .back-button, .logout-button {
+            background-color: #17d4c5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-button:hover, .logout-button:hover {
+          background-color:#14b7a9;
+        }
+
+        .device-section {
+            margin-bottom: 30px;
+        }
+
+        .device-section img {
+            width: 100%;
+            border-radius: 15px;
+            border: 3px solid #17d4c5;
+        }
+
+        .device-section h3 {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .thermostat, .lighting{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            font-size: 48px;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .btn-function {
+          display: block;
+          width: calc(100% - 40px);
+          padding: 10px;
+          background-color: #17d4c5;
+          color: white;
+          border-radius: 10px;
+          border: none;
+          cursor: pointer;
+          margin-top: 10px;
+          text-align:center; 
+          font-size :16px; 
+      }
+      .btn-function:hover{
+          background-color:#14b7a9;
+      }
+      
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+      <!-- Header with Back and Logout Buttons -->
+      <div class="header">
+          <a href="device-options.html" class="back-button">Back</a>
+          <h1>Main Menu</h1> 
+          <a href="index.html" class="logout-button">Logout</a>
+      </div>
+
+      <!-- Security Camera Section -->
+      <div class="device-section">
+          <img src="camera.jpg" alt="Camera Preview"> 
+          <h3>Security Cameras</h3>
+          <!-- Button to View Camera Feeds -->
+          <button class="btn-function" onclick="window.location.href='viewcamerafeed.html'">View Camera Feeds</button>
+      </div>
+
+      <!-- Thermostat Section -->
+      <div class="device-section">
+          <div class="thermostat">
+              <span id="thermostatTemp">73 °F</span>
+          </div>
+          <h3>Living Room Thermostat</h3>
+          <!-- Button to Change Thermostat Settings -->
+          <button class="btn-function" onclick="window.location.href='changethermostat.html'">Change Thermostat Settings</button>
+      </div>
+
+      <!-- TV Connection Status -->
+      <div class="status-section">
+          <h3>TV Status:</h3>
+          <p id="tv-status">Connected</p>
+          <!-- Button to View TV Settings -->
+          <button class="btn-function" onclick="window.location.href='tv-settings.html'">View TV Settings</button>
+      </div>
+
+      <!-- Light Status -->
+      <div class="status-section">
+          <div class="lighting">
+               <span>Power:&nbsp;</span>
+               <span id="light-power">25</span>
+               <span>&nbsp;Color:&nbsp;</span>
+               <span id="light-color">Blue</span>
+          </div>
+          <!-- Button to Change Light Settings -->
+          <button class="btn-function" onclick="window.location.href='light-settings.html'">Change Light Settings</button>
+      </div>
+
+   </div>
+
+   <!-- JavaScript to Update TV and Light Status (Optional) -->
+   <script>
+     // Simulated data for TV and Lights
+     var tvConnected = true;
+     
+
+     // Update TV status
+     var tvStatusElement = document.getElementById("tv-status");
+     tvStatusElement.innerHTML = tvConnected ? "Connected" : "Not Connected";
+
+     // Update Light status
+
+     // Load and display thermostat settings
+     function loadThermostatSettings() {
+         const savedSettings = JSON.parse(localStorage.getItem('thermostatSettings'));
+         if (savedSettings) {
+             document.getElementById('thermostatTemp').textContent = `${savedSettings.temperature} °F`;
+         }
+     }
+     function loadLightingSettings() {
+         const savedSettings = JSON.parse(localStorage.getItem('lightSettings'));
+         if (savedSettings) {
+             document.getElementById('light-power').innerText = savedSettings.power;
+             const colorElement = document.getElementById('light-color');
+             colorElement.innerText = savedSettings.color;
+             colorElement.style.color = savedSettings.colorColor;
+         }
+         else {
+            document.getElementById('light-power').innerText = "Null";
+            document.getElementById('light-color').innerText = "Null";
+        } 
+    } 
+  
+     // Call loadThermostatSettings when the page loads
+     window.addEventListener('load', loadThermostatSettings);
+     window.addEventListener('load', loadLightingSettings);
+   </script>
+
+</body> 
+</html>

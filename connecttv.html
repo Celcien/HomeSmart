@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Smart TV - Home Smart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d0f0f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button, .logout-button {
+            background-color: #17d4c5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-button:hover, .logout-button:hover {
+            background-color: #14b7a9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #17d4c5;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #14b7a9;
+        }
+        #notification {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        #availableTVs, #pairingOption, #codeInput {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="home.html" class="back-button">Back</a>
+            <h1>Connect Smart TV</h1>
+            <a href="index.html" class="logout-button">Logout</a>
+        </div>
+        
+        <form id="smartTVForm">
+            <button type="button" id="scanButton">Scan for Available TVs</button>
+            
+            <div id="availableTVs"></div>
+            
+            <div id="pairingOption">
+                <button type="button" id="pairButton">Pair with Selected TV</button>
+            </div>
+
+            <div id="codeInput">
+                <label for="tvCode">Enter the code displayed on your TV:</label>
+                <input type="text" id="tvCode" maxlength="4" required>
+                <button type="submit">Connect TV</button>
+            </div>
+        </form>
+        
+        <div id="notification">Smart TV Connected Successfully!</div>
+    </div>
+
+    <script>
+        document.getElementById('scanButton').addEventListener('click', function() {
+            const tvs = ['Samsung TV', 'LG Smart TV', 'Sony Bravia'];
+            const availableTVsDiv = document.getElementById('availableTVs');
+            availableTVsDiv.innerHTML = '<label for="tvSelect">Select a TV:</label>';
+            const select = document.createElement('select');
+            select.id = 'tvSelect';
+            tvs.forEach(tv => {
+                const option = document.createElement('option');
+                option.value = tv;
+                option.textContent = tv;
+                select.appendChild(option);
+            });
+            availableTVsDiv.appendChild(select);
+            availableTVsDiv.style.display = 'block';
+            document.getElementById('pairingOption').style.display = 'block';
+        });
+
+        document.getElementById('pairButton').addEventListener('click', function() {
+            const selectedTV = document.getElementById('tvSelect').value;
+            if (selectedTV) {
+                alert(`Pairing option shown for ${selectedTV}. Please check your TV for the pairing code.`);
+                document.getElementById('codeInput').style.display = 'block';
+            }
+        });
+
+        document.getElementById('smartTVForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('tvCode').value;
+            if (code.length === 4) {
+                // Simulating code verification
+                if (code === '1234') { // Example pairing code
+                    document.getElementById('notification').style.display = 'block';
+                    setTimeout(function() {
+                        document.getElementById('notification').style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Incorrect code. Please try again.');
+                }
+            } else {
+                alert('Please enter a valid 4-digit code.');
+            }
+        });
+    </script>
+</body>
+</html>

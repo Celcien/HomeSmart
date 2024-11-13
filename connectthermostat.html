@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Thermostat - Home Smart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d0f0f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button, .logout-button {
+            background-color: #17d4c5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-button:hover, .logout-button:hover {
+            background-color: #14b7a9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #17d4c5;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #14b7a9;
+        }
+        #notification {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        #availableThermostats, #connectForm {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="home.html" class="back-button">Back</a>
+            <h1>Connect Thermostat</h1>
+            <a href="index.html" class="logout-button">Logout</a>
+        </div>
+        
+        <button id="scanButton">Scan for Available Thermostats</button>
+        
+        <div id="availableThermostats">
+            <label for="thermostatSelect">Select a Thermostat:</label>
+            <select id="thermostatSelect"></select>
+        </div>
+        
+        <form id="connectForm">
+            <label for="securityCode">Enter 4-Digit Security Code:</label>
+            <input type="text" id="securityCode" maxlength="4" pattern="\d{4}" required>
+            <button type="submit">Connect Thermostat</button>
+        </form>
+        
+        <div id="notification"></div>
+    </div>
+
+    <script>
+        function scanAvailableThermostats() {
+            // Simulating the discovery of thermostats
+            const availableThermostats = [
+                'Nest Learning Thermostat',
+                'Ecobee SmartThermostat',
+                'Honeywell Home T9',
+                'Emerson Sensi Touch'
+            ];
+            return availableThermostats.filter(() => Math.random() < 0.5);
+        }
+
+        document.getElementById('scanButton').addEventListener('click', function() {
+            const thermostats = scanAvailableThermostats();
+            const select = document.getElementById('thermostatSelect');
+            select.innerHTML = '';
+            thermostats.forEach(thermostat => {
+                const option = document.createElement('option');
+                option.value = thermostat;
+                option.textContent = thermostat;
+                select.appendChild(option);
+            });
+            document.getElementById('availableThermostats').style.display = 'block';
+            document.getElementById('connectForm').style.display = 'block';
+        });
+
+        document.getElementById('connectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedThermostat = document.getElementById('thermostatSelect').value;
+            const securityCode = document.getElementById('securityCode').value;
+            
+            if (securityCode.length === 4 && /^\d+$/.test(securityCode)) {
+                document.getElementById('notification').textContent = `${selectedThermostat} Connected Successfully!`;
+                document.getElementById('notification').style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById('notification').style.display = 'none';
+                }, 3000);
+            } else {
+                alert('Please enter a valid 4-digit security code.');
+            }
+        });
+    </script>
+</body>
+</html>

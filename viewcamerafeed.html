@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Camera Feed - Home Smart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d0f0f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button, .logout-button {
+            background-color: #17d4c5;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-button:hover, .logout-button:hover {
+            background-color: #14b7a9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .camera-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .camera-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .camera-feed {
+            width: 100%;
+            height: 150px;
+            background-color: #000;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        .status {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .live {
+            color: green;
+        }
+        .offline {
+            color: red;
+        }
+        .activity {
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="main-menu.html" class="back-button">Back</a>
+            <h1>Camera Feeds</h1>
+            <a href="index.html" class="logout-button">Logout</a>
+        </div>
+        
+        <div class="camera-grid" id="cameraGrid">
+            <!-- Camera cards will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Simulated camera data
+        const cameras = [
+            { id: 1, name: "Front Door", status: "live", activity: "Movement detected 5 minutes ago" },
+            { id: 2, name: "Back Yard", status: "live", activity: "No recent activity" },
+            { id: 3, name: "Garage", status: "offline", activity: "Last online 2 hours ago" },
+            { id: 4, name: "Living Room", status: "live", activity: "Movement detected 1 hour ago" }
+        ];
+
+        function createCameraCard(camera) {
+            return `
+                <div class="camera-card">
+                    <div class="camera-feed">
+                        ${camera.status === 'live' ? 'LIVE FEED' : 'OFFLINE'}
+                    </div>
+                    <h3>${camera.name}</h3>
+                    <p class="status ${camera.status}">${camera.status.toUpperCase()}</p>
+                    <p class="activity">${camera.activity}</p>
+                </div>
+            `;
+        }
+
+        function displayCameras() {
+            const cameraGrid = document.getElementById('cameraGrid');
+            cameras.forEach(camera => {
+                cameraGrid.innerHTML += createCameraCard(camera);
+            });
+        }
+
+        // Display cameras when the page loads
+        displayCameras();
+    </script>
+</body>
+</html>
