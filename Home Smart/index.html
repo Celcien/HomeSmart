@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Home Smart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d0f0f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 36px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+        .form-box {
+            margin-top: 20px;
+        }
+
+        .form-box label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-box input[type=text], 
+        .form-box input[type=password] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        /* Button Styles */
+        .btn-signin {
+            width: calc(100% - 20px);
+            padding: 12px;
+            background-color: #17d4c5;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Link Style */
+        .signup-link a {
+           color:#17d4c5; 
+           text-decoration:none; 
+           display:block; 
+           text-align:center; 
+           margin-top:10px; 
+        }
+        
+        .signup-link a:hover{
+           text-decoration:underline; 
+        }
+    </style>
+
+    <!-- JavaScript for Redirection without Validation -->
+    <script>
+      function redirectToOptions() {
+          // Redirect to the new page (device-options.html) without validation
+          window.location.href = "device-options.html";
+      }
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Home Smart</h1>
+            <p>Home At Its Full Potential</p>
+        </div>
+
+        <!-- Form with no validation -->
+        <form class="form-box" onsubmit="redirectToOptions(); return false;">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password">
+
+            <!-- Sign In Button -->
+            <!-- No validation, just redirects to device-options.html -->
+            <button type="submit" class="btn-signin">Sign In</button>
+
+            <!-- Link to Sign Up Page -->
+            <p class="signup-link">Don't have an account? 
+                <!-- This link will take you to signup.html -->
+                <a href="signup.html">Sign Up Here!</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>
